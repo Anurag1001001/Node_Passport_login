@@ -6,14 +6,18 @@ const expresslayouts = require('express-ejs-layouts');
 app.use(expresslayouts);
 app.set('view engine', 'ejs');
 
+// setup static files
+app.use(express.static('./assets'));
+
+
+
+
+
 
 
 
 // Routes
 app.use('/', require('./routes/index'));
-app.use('/user', require('./routes/user'));
 
-
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, console.log(`server started on ${PORT}`));
