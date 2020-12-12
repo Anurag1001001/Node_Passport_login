@@ -1,3 +1,4 @@
+const Users = require('../models/userSchema');
 const fs = require('fs');
 const path = require('path');
 
@@ -28,6 +29,20 @@ module.exports.create = function(req, res){
         });
     }
     else{
-        res.send('pass');
+        // Validation passed
+        Users.findOne({email: email})
+        .then(user => {
+            if(user){
+                // User exists
+                errors.push({msg: 'Email is already registered'});
+                res.render('register', {
+                    errors,
+                    name,
+                    email,
+                    password,
+                    password2
+                  });
+            }
+        })
     }
 }
