@@ -1,6 +1,9 @@
 const Users = require('../models/userSchema');
 const fs = require('fs');
 const path = require('path');
+// this mmodule is basically use to encrpt things 
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
 
 
 module.exports.create = function(req, res){
@@ -42,6 +45,19 @@ module.exports.create = function(req, res){
                     password,
                     password2
                   });
+            }else{
+              //  method to generate encrypted password
+              bcrypt.genSalt(10,(err, salt) =>{
+                bcrypt.hash(password, salt, (err, hash) =>{
+                  if(err) throw err;
+                  console.log(password);
+                  req.body.password = hash;
+                  Users.create(req.body, (err, user) =>{
+                    if (err) throw err;
+                    res.redirect('/users/login')
+                  })
+                })
+              })
             }
         })
     }
