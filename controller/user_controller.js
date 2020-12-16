@@ -54,7 +54,8 @@ module.exports.create = function(req, res){
                   req.body.password = hash;
                   Users.create(req.body, (err, user) =>{
                     if (err) throw err;
-                    res.redirect('/users/login')
+                    req.flash('success', 'You have successfully logged in')
+                    res.redirect('/users/login');
                   })
                 })
               })
