@@ -1,9 +1,14 @@
 const express = require('express');
-const app = express();
 const expresslayouts = require('express-ejs-layouts');
 const session = require('express-session');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
+const passport = require('passport');
+
+const app = express();
+
+// passport config
+require('./config/passport-local-strategy')(passport)
 
 //Ejs
 app.use(expresslayouts);
@@ -22,6 +27,11 @@ app.use(session({
     saveUninitialized: false
 }));
 
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // connect flash
 app.use(flash());
 
@@ -34,6 +44,7 @@ const PORT = process.env.PORT || 8000;
 
 //  database config
 const db = require('./config/mongoose.js');
+// const passport = require('passport');
 
 
 
